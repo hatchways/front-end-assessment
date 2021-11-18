@@ -1,0 +1,44 @@
+/* fonts */
+
+h2{
+  color: grey;
+  font-size: small;
+  font-weight: 300;
+}
+
+/* elements  */
+.App{
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  scroll-behavior: smooth;
+}
+
+.box {
+  margin-left: 8rem;
+}
+.data {
+  margin-left: 3rem
+}
+
+.data-container {
+  border-bottom: 1px solid grey;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* toggling grades visibility with button */
+.grades {
+  display:none
+}
+
+.grades:open{
+  display:block
+}
+
+
+.profile-pic {
+  margin-left: 3rem;
+  border: 2px solid black;
+  border-radius: 50%;
+}

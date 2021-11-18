@@ -37,7 +37,6 @@ function App() {
     for (let i = 0; i < students.grades.length; i++) {
       return (
         <li>
-          {" "}
           test {i} : {test.grade[i]}
         </li>
       );

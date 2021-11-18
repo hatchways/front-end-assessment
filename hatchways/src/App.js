@@ -4,11 +4,15 @@ import "./App.css";
 function App() {
   const url = "https://api.hatchways.io/assessment/students";
   const initialState = { firstName: "" };
+
+  //setting state for our Student array, our 2 input forms, and our + button to show grades
   const [navbarOpen, setNavbarOpen] = useState(false);
   const [students, setStudents] = useState([{}]);
   const [nameFormState, setNameFormState] = useState(initialState);
   const [tagFormState, setTagFormState] = useState("");
 
+
+  // This is the component that houses the forms to filter by name and tag
   const FilterForm = () => {
     return (
       <header>
@@ -33,6 +37,7 @@ function App() {
     );
   };
 
+  //this is the component that will show the full grades for the student. They are made hidden/shown by the toggle command later
   const GradesList = () => {
     for (let i = 0; i < students.grades.length; i++) {
       return (
@@ -43,30 +48,33 @@ function App() {
     }
   };
 
+ //this keeps the Name Filter form in State 
   const handleNameChange = (event) => {
     setNameFormState({ ...nameFormState, [event.target.id]: event.target.value });
     console.log(nameFormState);
   };
 
+ //this keeps the Tag Filter form in State 
   const handleTagChange = (event) => {
     setTagFormState({ ...tagFormState, [event.target.id]: event.target.value });
     console.log(tagFormState);
   };
 
+  //handles the full list of grades being shown or not
   const handleToggle = () => {
     setNavbarOpen(!navbarOpen);
   };
 
+  //async function to pull students from API and keep in state
   const getStudents = async () => {
     const response = await fetch(url);
     const data = await response.json();
-    console.log(data)
-    setStudents({ data });
-    console.log(students)
-  
+    setStudents(data);
+
   };
 
-  console.log(students)
+  //This is the part that I was not able to finish before submission, filtering the Students by both name and tag
+  //but as you can see they are being mapped out and housed in their own div's to be styled appropriately here
   const StudentList = (nameFormState, tagFormState, students) => {
     console.log(students)  
     return (
@@ -115,20 +123,29 @@ function App() {
     
   };
 
+  //Makes sure we aren't running stuck in a loop, controls getStudents function call during component lifecycle
+  useEffect(() => getStudents(), []);
+
+  //This component contains both our filters and the filtered and mapped list of our students
+  //when the student data is pulled we can return it to show on screen
   const Loaded = () => {
     return(
     <div className="App-container">
-    <FilterForm /> 
+    <FilterForm 
+      nameFormState={nameFormState}
+      setNameFormState={setNameFormState}
+      tagFormState={tagFormState}
+      setNameFormState={setNameFormState}/> 
     <StudentList />
   </div>
     )
   }
 
 
-  useEffect(() => getStudents(), []);
-  console.log(typeof students);
 
-return students ? <div><Loaded/></div> : <h1> ...loading</h1>
+//ternary operator to make sure we are only displaying our Loaded component when we have Student data pulled from the API
+//if we don't have students up on screen, we'll have a Loading screen rather than a React error message
+return students ? <div><Loaded/></div> : <h1>loading...</h1>
 
 
 }
